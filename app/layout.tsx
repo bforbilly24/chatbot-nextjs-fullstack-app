@@ -15,9 +15,10 @@ export const metadata: Metadata = {
     },
     description: 'Experience intelligent conversations with our advanced AI chatbot. Get instant responses, creative assistance, and helpful information in a beautiful, user-friendly interface.',
     keywords: ['AI chatbot', 'artificial intelligence', 'conversation', 'chat assistant', 'AI assistant', 'machine learning'],
-    authors: [{ name: 'Vercel Team' }],
-    creator: 'Vercel',
-    publisher: 'Vercel',
+    authors: [{ name: 'Halim Putra' }],
+    creator: 'Halim Putra',
+    publisher: 'Halim Putra',
+    applicationName: 'AI Chatbot',
     robots: {
         index: true,
         follow: true,
@@ -26,6 +27,24 @@ export const metadata: Metadata = {
             follow: true,
         },
     },
+    icons: {
+        icon: [
+            { url: '/favicon/favicon.ico', sizes: 'any' },
+            { url: '/favicon/favicon.svg', type: 'image/svg+xml' },
+            { url: '/favicon/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+        ],
+        apple: [
+            { url: '/favicon/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+        ],
+        other: [
+            {
+                rel: 'mask-icon',
+                url: '/favicon/favicon.svg',
+                color: '#000000',
+            },
+        ],
+    },
+    manifest: '/favicon/site.webmanifest',
     openGraph: {
         type: 'website',
         locale: 'en_US',
@@ -47,7 +66,7 @@ export const metadata: Metadata = {
         title: 'AI Chatbot - Intelligent Conversations Powered by AI',
         description: 'Experience intelligent conversations with our advanced AI chatbot. Get instant responses and creative assistance.',
         images: ['/twitter-image.png'],
-        creator: '@vercel',
+        creator: '@bforbilly24',
     },
     verification: {
         google: 'your-google-verification-code',
