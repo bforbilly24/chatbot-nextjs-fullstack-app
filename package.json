@@ -1,5 +1,19 @@
 {
-    "name": "ai-chatbot",
+    "name": "steamdevportfolio-nextjs-frontend-app",
+    "description": "About AI-powered chatbot built with Next.js, Prisma, PostgreSQL, and NextAuth.js (Google OAuth). Supports persistent chat history, memory handling via LangChain/manual prompts, and integration with multiple LLM APIs (Gemini, Gemma, OpenAI, Groq). Simple, flexible, and extensible. Topics",
+    "author": "Halim Putra",
+    "license": "MIT",
+    "keywords": [
+        "nextjs",
+        "tailwindcss",
+        "shadcn-ui",
+        "postgresql",
+        "groq-api"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bforbilly24/steamdevportfolio-nextjs-frontend-app"
+    },
     "version": "3.1.0",
     "private": true,
     "scripts": {
