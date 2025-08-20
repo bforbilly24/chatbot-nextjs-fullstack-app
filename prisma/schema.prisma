@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../lib/generated/prisma"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("POSTGRES_URL")
+}
+
+model User {
+    id       String  @id @default(uuid()) @db.Uuid
+    email    String  @unique @db.VarChar(64)
+    password String? @db.VarChar(64)
+
+    // Relations
+    chats       Chat[]
+    documents   Document[]
+    suggestions Suggestion[]
+
+    @@map("User")
+}
+
+model Chat {
+    id         String     @id @default(uuid()) @db.Uuid
+    createdAt  DateTime   @db.Timestamp(6)
+    title      String     @db.Text
+    userId     String     @db.Uuid
+    visibility Visibility @default(private)
+
+    // Relations
+    user               User                @relation(fields: [userId], references: [id])
+    messages           Message[]
+    votes              Vote[]
+    messagesDeprecated MessageDeprecated[]
+    votesDeprecated    VoteDeprecated[]
+
+    @@map("Chat")
+}
+
+model Message {
+    id          String   @id @default(uuid()) @db.Uuid
+    chatId      String   @db.Uuid
+    role        String   @db.VarChar
+    parts       Json
+    attachments Json
+    createdAt   DateTime @db.Timestamp(6)
+
+    // Relations
+    chat  Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+    votes Vote[]
+
+    @@map("Message_v2")
+}
+
+model Vote {
+    chatId    String  @db.Uuid
+    messageId String  @db.Uuid
+    isUpvoted Boolean
+
+    // Relations
+    chat    Chat    @relation(fields: [chatId], references: [id], onDelete: Cascade)
+    message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+    @@id([chatId, messageId])
+    @@map("Vote_v2")
+}
+
+model Document {
+    id        String       @default(uuid()) @db.Uuid
+    createdAt DateTime     @db.Timestamp(6)
+    title     String       @db.Text
+    content   String?      @db.Text
+    kind      DocumentKind @default(text)
+    userId    String       @db.Uuid
+
+    // Relations
+    user        User         @relation(fields: [userId], references: [id])
+    suggestions Suggestion[]
+
+    @@id([id, createdAt])
+    @@map("Document")
+}
+
+model Suggestion {
+    id                String   @id @default(uuid()) @db.Uuid
+    documentId        String   @db.Uuid
+    documentCreatedAt DateTime @db.Timestamp(6)
+    originalText      String   @db.Text
+    suggestedText     String   @db.Text
+    description       String?  @db.Text
+    isResolved        Boolean  @default(false)
+    userId            String   @db.Uuid
+    createdAt         DateTime @db.Timestamp(6)
+
+    // Relations
+    user     User     @relation(fields: [userId], references: [id])
+    document Document @relation(fields: [documentId, documentCreatedAt], references: [id, createdAt])
+
+    @@map("Suggestion")
+}
+
+// Deprecated models for backward compatibility
+model MessageDeprecated {
+    id        String   @id @default(uuid()) @db.Uuid
+    chatId    String   @db.Uuid
+    role      String   @db.VarChar
+    content   Json
+    createdAt DateTime @db.Timestamp(6)
+
+    // Relations
+    chat            Chat             @relation(fields: [chatId], references: [id], onDelete: Cascade)
+    votesDeprecated VoteDeprecated[]
+
+    @@map("Message")
+}
+
+model VoteDeprecated {
+    chatId    String  @db.Uuid
+    messageId String  @db.Uuid
+    isUpvoted Boolean
+
+    // Relations
+    chat    Chat              @relation(fields: [chatId], references: [id], onDelete: Cascade)
+    message MessageDeprecated @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+    @@id([chatId, messageId])
+    @@map("Vote")
+}
+
+enum Visibility {
+    private
+}
+
+enum DocumentKind {
+    text
+    code
+    image
+    sheet
+}
